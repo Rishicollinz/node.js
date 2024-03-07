@@ -304,3 +304,233 @@ Global functions like setTimeout(), setInterval(), and console.log().
 Global properties like NaN, Infinity, and undefined.
 Constructors like Array, String, and Object.
 
+7/3/24
+
+NPM:
+===
+
+->Largest software library
+->Software package manager.
+
+->Npm is a library or a registry which contains code packages written by various developers.
+->A command line interface tool that lets up manage packages in a project.
+
+Other package Managers:
+yarn,pnpm.
+
+->Default of nodejs is npm.
+
+to check npm version : npm -v
+
+->Npm is a not only node but also a package manager for js.
+
+why npm:
+=======
+
+->If we need to use code of others, we need npm;
+
+Package.json:
+============
+refer:packageTry
+
+what?
+->Npm's configuration file.
+->It is a json file that typically lives in the root directory of your package and holds various metadatga relevant to the package.
+
+why?
+->It is the central place to configure and describe how to interact with and run your package.
+
+->It is primarily used by the npm CLI.
+
+Creation:
+->we can create a package.json file(name and version = mandatory);
+->package.json - keywords - this is used in npm website searching for package (it is like metadata)- This is array of words.
+->description - describe the package.
+->main - entry point of the project.
+
+Auto-creation:
+->npm init = walkthrough the package.json setup.
+->npm init -y = default package.json generated instantly.
+
+Installing packages from npm registry:
+======================================
+
+->Go to npmjs.com and search for package(here I checked for lower-case);
+
+->Analyze:
+    ->Publish date: less than year(latest);
+    ->weekly downloads: don't go for <1000.
+    ->package size: small project size.
+
+->Go to project folder terminal and use installation cmd of the project from registry.
+->The package will be downloaded from the registry and installed in node modules folder of the project.
+ex:npm i lower-case
+
+->Dependencies will be included in package.json.
+
+->To uninstall a package:
+    ->npm uninstall <package_name>
+    ->This will remove the package data in node modules as well as in package.json's dependencies.
+
+->Package-lock.json contains all the installed packages along with our project's version details.
+
+Using packages:
+==============
+
+->Read the usage of the package from the registry.
+
+->Import it like a esm or commonJs module:
+ex:let lowerCase = require("lower-case").lowerCase;(commonJs);
+
+->use the variable which has the function in the code
+
+Dependencies:
+=============
+->It contains the installed packages version number;
+->The node modules contains the installed package which has the size in megaBytes.
+->So we tend to .gitignore it and the dev's who need to use this project can just the clone the project source code and use "npm install" to install all the necessary packages for the project.
+
+versioning:
+==========
+
+->To downgrade: npm install <package-name>@<version>
+
+->To latest version : npm install <package-name>
+
+Semantic versioning:
+===================
+
+->SemVer is a simple set of rules and requirements that dictate how version numbers are assigned and incremented.
+
+syntax: x.y.z
+
+x=major version.
+y=minor version.
+z=patch.
+
+->when we fix the bug and backwards-compatible then increase patch.
+ex:1.1.1 to 1.1.2
+
+->when we add new feature and the code is backward compatible then increase minor version.
+ex:1.1.2 to 1.2.0
+
+->when we add new feature and the code is not backward compatible then increase major version.
+ex:1.2.0 to 2.0.0;
+
+->Initial dev version:0.1.0;
+
+->Production ready:1.0.0;
+
+Global packages:
+================
+->Some package should be only used on cmd line.
+->Like create-react-app package from registry.
+Ex:nodemon
+
+install syntax: sudo npm install -g nodemon
+
+->They are not described in the package.json. so npm install won't work.
+
+uninstall: npm uninstall -g nodemon
+
+
+NPM Scripts:
+============
+
+->An npm script is a convenient way to bundle common commands for use in a project.
+
+->They are typically entered in the command line in order to do something with the application.
+
+->NPM scripts are stored in a project's package.json file, giving access to everyone who has access to the codebase.
+
+syntax:
+    ->ex: npm run <script_name>
+
+Ex:
+"scripts": {
+    "start":"node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+->"npm run start", will run index.js
+
+Publish a package:
+==================
+1.create a account on npmjs.com(remember username and password);
+2.Login into account on vscode
+    ->syntax:npm adduser <username>
+    ->password & email.
+3.Now publish:
+    ->syntax: npm publish
+4.Check in npm registry:
+    ->http://www.npmjs.com/package/rishipackagetry
+
+Using my published package:
+============================
+
+refer:./newPackage/ex11.js
+->npm version patch --will increase the x:y:z++;
+->npm version major --will increase the x++:y:z;
+->npm version minor --will increase the x:y++:z;
+
+
+NPX:
+===
+
+->NPX directly executes and then uninstalls them.
+->npx helps us avoid versioning, dependency issues and installing unnecessary packages that we just want to try out.
+
+NPX:Workspace:
+video:https://www.youtube.com/watch?v=4CpR-_Nyd00&ab_channel=ConciseDeveloper
+=============
+A workspace in npm refers to a feature introduced in npm version 7 that allows you to manage multiple packages within a single root project. This feature is particularly useful for monorepos, where you have multiple related packages that you want to manage together, sharing dependencies, scripts, and versioning.
+
+->Normally there is client :
+
+client:
+=======
+->Node modules
+->Src/index.js
+->package.json
+
+server:
+=======
+->Node modules
+->Src/index.js
+->package.json
+
+->Now comes monospace- which contains both client and server but with separate package.json files.
+
+monospace:
+==========
+->node modules
+->packages
+    ->server    
+        ->src/index.js
+    ->client
+        ->src/index.js
+->Package.json
+
+->Monospace can be implemented by using npm workspaces.
+
+steps for workspace:
+refer:npmWorkspace
+-------------------
+npm init -y -w packages/rishiser
+ver -w packages/rishiclient.
+-w=for workspace.
+
+->node_modules will have two folder...
+->Each packages will have separate package.json;
+
+To install for single packages:
+npm i cowsay -w packages/rishicl
+ient
+
+Running scripts in workspaces:
+===============================
+->"npm test" on root directory of project will return the test script on package.json on root folder;
+->"npm test -ws" will run the test scripts on each of the package.json on the workspace.
+->npm test -w packages/rishiserver will run on the specific package of the workspace.
+
+->This is the npm workspaces.
